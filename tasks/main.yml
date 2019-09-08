@@ -1,0 +1,84 @@
+---
+
+- name: create thelounge home
+  file:
+    state: directory
+    path: "{{ thelounge_home }}"
+
+- name: render thelounge config.js
+  template:
+    src: config.js
+    dest: "{{ thelounge_home }}/config.js"
+
+- name: install docker
+  include_role:
+    name: docker
+    apply:
+      become: yes
+
+- name: render docker-compose.yml
+  template:
+    src: docker-compose.yml
+    dest: "{{ thelounge_home }}/docker-compose.yml"
+
+- name: apt install supervisor
+  become: yes
+  apt:
+    update_cache: yes
+    name: supervisor
+
+- name: render supervisor conf
+  become: yes
+  template:
+    src: supervisor/thelounge.conf
+    dest: /etc/supervisor/conf.d/thelounge.conf
+
+- name: restart supervisor
+  become: yes
+  supervisorctl:
+    name: thelounge
+    state: restarted
+
+# now you should be able to access thelounge with ip:
+# http://IP:9000
+
+- name: apt install nginx
+  become: yes
+  apt:
+    update_cache: yes
+    name: nginx
+
+- name: render nginx conf
+  become: yes
+  template:
+    src: nginx/thelounge.conf
+    dest: /etc/nginx/conf.d/thelounge.conf
+
+- name: restart nginx
+  become: yes
+  service:
+    name: nginx
+    state: restarted
+
+# now you should be able to access thelounge with domain:
+# http://thelouge.example.com
+
+- name: install certbot
+  include_role:
+    name: certbot
+    apply:
+      become: yes
+  vars:
+    certbot_create_if_missing: true
+    certbot_admin_email: "{{ certbot_admin_email }}"
+    certbot_certs:
+      - domains: ["{{ thelounge_domain_name }}"]
+
+- name: restart nginx
+  become: yes
+  service:
+    name: nginx
+    state: restarted
+
+# now you should be able to access thelounge with https
+# https://thelouge.example.com

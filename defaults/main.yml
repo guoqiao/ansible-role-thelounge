@@ -1,0 +1,16 @@
+---
+thelounge_home: "{{ ansible_env.HOME }}/thelounge"
+
+thelounge_domain_name: thelounge.example.com
+
+thelounge_default_name: Freenode
+thelounge_default_host: chat.freenode.net
+thelounge_default_port: 6697
+thelounge_default_join: "#thelounge"
+
+thelounge_default_nick: "{{ lookup('env', 'USER') }}"
+thelounge_default_username: "{{ lookup('env', 'USER') }}"
+thelounge_default_realname: "{{ lookup('env', 'IRC_REALNAME') }}"
+thelounge_default_password: "{{ lookup('env', 'IRC_PASSWORD') }}"
+
+certbot_admin_email: "{{ lookup('env', 'EMAIL') }}"
