@@ -228,7 +228,7 @@ module.exports = {
 		realname: "{{ thelounge_default_realname }}",
 		join: "{{ thelounge_default_channels }}",
 		tls: true,
-		rejectUnauthorized: true,
+		rejectUnauthorized: true
 	},
 
 	// ### `displayNetwork`
