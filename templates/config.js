@@ -226,7 +226,7 @@ module.exports = {
 		nick: "{{ thelounge_default_nick }}",
 		username: "{{ thelounge_default_username }}",
 		realname: "{{ thelounge_default_realname }}",
-		join: "{{ thelounge_default_join }}",
+		join: "{{ thelounge_default_channels }}",
 		tls: true,
 		rejectUnauthorized: true,
 	},
